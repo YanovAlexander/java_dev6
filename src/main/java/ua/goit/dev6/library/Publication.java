@@ -10,7 +10,7 @@ public class Publication {
     }
 
     public String print() {
-        String result = "Name= " + name + ", countPages= " + countPages;
+        String result = "name= " + name + ", countPages= " + countPages;
         return result;
     }
 }
