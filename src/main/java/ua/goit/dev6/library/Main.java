@@ -17,7 +17,10 @@ public class Main {
                 new Journal("Gamer", 101, 10, 2018)});
 
         Repository repository = new Repository(1);
-        repository.addPublication(new Journal("PC", 100, 1, 2021));
-        repository.addPublication(new Journal("PC", 100, 1, 2021));
+        repository.add(new Journal("PC", 100, 1, 2021));
+        repository.add(new Journal("PC", 100, 1, 2021));
+        repository.add(new Book("Witcher", 200, "Andrzej Sapkowski"));
+        repository.printAll();
+
     }
 }

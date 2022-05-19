@@ -13,12 +13,29 @@ public class Repository {
         this.publications = new Publication[size];
     }
 
-    public void addPublication(Publication publication) {
+    public void add(Publication publication) {
         increaseArraySize();
         publications[cursor] = publication;
         cursor ++;
     }
+    public void delete(int index){
+        publications[index] = null;
+    }
+    public void delete(Publication publication){
+        for (int i = 0; i < publications.length; i++) {
+            if (publications[i]!= null && publications[i].equals(publication)){
+                publications[i] = null;
+            }
+        }
+    }
+    public void printAll(){
+        for (Publication publication : publications) {
+            if (publication != null){
+                System.out.println(publication.print());
+            }
 
+        }
+    }
     private void increaseArraySize() {
         if (cursor >= publications.length ) {
             Publication[] newPublications = new Publication[publications.length * 2];
