@@ -15,6 +15,9 @@ public class Main {
         library.printPublications(new Publication[]{new Book("Witcher", 200, "Andrzej Sapkowski")});
         library.printPublications(new Publication[]{new Book("Master & Margarita", 300, "Mikhail Bulgakov"),
                 new Journal("Gamer", 101, 10, 2018)});
-    }
 
+        Repository repository = new Repository(1);
+        repository.addPublication(new Journal("PC", 100, 1, 2021));
+        repository.addPublication(new Journal("PC", 100, 1, 2021));
+    }
 }
