@@ -16,30 +16,53 @@ public class Repository {
     public void add(Publication publication) {
         increaseArraySize();
         publications[cursor] = publication;
-        cursor ++;
+        cursor++;
     }
-    public void delete(int index){
-        publications[index] = null;
+
+    public void delete(int index) {
+        if (index >= 0 && index <= cursor) {
+            publications[index] = null;
+        }
+
     }
-    public void delete(Publication publication){
+
+    public void delete(Publication publication) {
         for (int i = 0; i < publications.length; i++) {
-            if (publications[i]!= null && publications[i].equals(publication)){
+            if (publications[i] != null && publications[i].equals(publication)) {
                 publications[i] = null;
             }
         }
     }
-    public void printAll(){
+
+    public Publication find(int index) {
+        if (cursor < index || index < 0) {
+            return null;
+        }
+        return publications[index];
+    }
+
+    public boolean contains(Publication publication) {
+        for (Publication currentPublication : publications) {
+            if (currentPublication != null && currentPublication.equals(publication)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void printAll() {
         for (Publication publication : publications) {
-            if (publication != null){
+            if (publication != null) {
                 System.out.println(publication.print());
             }
 
         }
     }
+
     private void increaseArraySize() {
-        if (cursor >= publications.length ) {
+        if (cursor >= publications.length) {
             Publication[] newPublications = new Publication[publications.length * 2];
-            for (int i=0; i< publications.length; i++) {
+            for (int i = 0; i < publications.length; i++) {
                 newPublications[i] = publications[i];
             }
             publications = newPublications;

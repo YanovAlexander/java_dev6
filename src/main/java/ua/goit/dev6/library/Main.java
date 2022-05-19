@@ -17,10 +17,16 @@ public class Main {
                 new Journal("Gamer", 101, 10, 2018)});
 
         Repository repository = new Repository(1);
-        repository.add(new Journal("PC", 100, 1, 2021));
+        Publication journal =new Journal("PC", 100, 1, 2021);
+        repository.add(journal);
         repository.add(new Journal("PC", 100, 1, 2021));
         repository.add(new Book("Witcher", 200, "Andrzej Sapkowski"));
         repository.printAll();
+        System.out.println(repository.contains(journal));
+        System.out.println(repository.find(0).print());
+        repository.delete(0);
+        //repository.delete(journal);
+        System.out.println(repository.contains(journal));
 
     }
 }
