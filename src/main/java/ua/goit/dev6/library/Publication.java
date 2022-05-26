@@ -28,4 +28,6 @@ public class Publication {
     public int hashCode() {
         return Objects.hash(name, countPages);
     }
+
+
 }
