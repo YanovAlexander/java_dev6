@@ -1,6 +1,7 @@
 package ua.goit.dev6.library.controller;
 
 import ua.goit.dev6.library.command.Command;
+import ua.goit.dev6.library.exceptions.ExitException;
 import ua.goit.dev6.library.view.View;
 
 import java.util.List;
@@ -17,7 +18,9 @@ public class Library {
 
     public void run() {
         view.write("Hello, please enter help to see all command");
-        execute();
+        try {
+            execute();
+        } catch (ExitException e) {}
     }
 
     private void execute() {
@@ -26,6 +29,7 @@ public class Library {
             boolean isInputCorrect = false;
             for (Command command : commands) {
                 if (command.canExecute(input)) {
+
                     command.execute();
                     isInputCorrect = true;
                 }

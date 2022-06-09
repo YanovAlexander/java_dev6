@@ -17,9 +17,9 @@ public class Help implements Command {
 
     @Override
     public void execute() {
-        view.write("Enter help to see all command");
-        view.write("Enter exit to exit program");
-        view.write("Enter add book command to add book to the library");
-        view.write("Enter add journal command to add journal to the library");
+        view.write(String.format("Enter %s to see all command", Help.HELP));
+        view.write(String.format("Enter %s to exit program", Exit.EXIT));
+        view.write(String.format("Enter %s command to add book to the library", AddBook.ADD_BOOK));
+        view.write(String.format("Enter %s command to add journal to the library", "add journal"));
     }
 }
