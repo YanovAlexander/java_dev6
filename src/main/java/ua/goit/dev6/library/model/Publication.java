@@ -1,4 +1,4 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.model;
 
 import java.util.Objects;
 

@@ -1,6 +1,8 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.service;
 
-import java.time.Year;
+import ua.goit.dev6.library.repository.Repository;
+import ua.goit.dev6.library.model.Journal;
+
 import java.util.Scanner;
 
 public class JournalService {

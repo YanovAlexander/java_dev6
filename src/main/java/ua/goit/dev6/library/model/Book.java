@@ -1,16 +1,14 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.model;
 
 import java.util.Objects;
 
 public class Book extends Publication {
     private String author;
 
-
     public Book(String name, int countPages, String author) {
         super(name, countPages);
         this.author = author;
     }
-
 
     @Override
     public String print() {
@@ -30,5 +28,4 @@ public class Book extends Publication {
     public int hashCode() {
         return Objects.hash(super.hashCode(), author);
     }
-
 }

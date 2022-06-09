@@ -1,24 +1,30 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.repository;
 
-public class Repository {
+import ua.goit.dev6.library.model.Publication;
+
+import java.util.Arrays;
+
+public class InMemoryArrayRepository implements Repository {
     private Publication[] publications;
     private int cursor = 0;
     private static final int DEFAULT_ARRAY_SIZE = 16;
 
-    public Repository() {
+    public InMemoryArrayRepository() {
         this.publications = new Publication[DEFAULT_ARRAY_SIZE];
     }
 
-    public Repository(int size) {
+    public InMemoryArrayRepository(int size) {
         this.publications = new Publication[size];
     }
 
+    @Override
     public void add(Publication publication) {
         increaseArraySize();
         publications[cursor] = publication;
         cursor++;
     }
 
+    @Override
     public void delete(int index) {
         if (index >= 0 && index <= cursor) {
             publications[index] = null;
@@ -26,6 +32,7 @@ public class Repository {
 
     }
 
+    @Override
     public void delete(Publication publication) {
         for (int i = 0; i < publications.length; i++) {
             if (publications[i] != null && publications[i].equals(publication)) {
@@ -34,6 +41,7 @@ public class Repository {
         }
     }
 
+    @Override
     public Publication find(int index) {
         if (cursor < index || index < 0) {
             return null;
@@ -41,6 +49,7 @@ public class Repository {
         return publications[index];
     }
 
+    @Override
     public boolean contains(Publication publication) {
         for (Publication currentPublication : publications) {
             if (currentPublication != null && currentPublication.equals(publication)) {
@@ -50,13 +59,9 @@ public class Repository {
         return false;
     }
 
-    public void printAll() {
-        for (Publication publication : publications) {
-            if (publication != null) {
-                System.out.println(publication.print());
-            }
-
-        }
+    @Override
+    public Publication[] findAll() {
+        return Arrays.copyOf(publications, publications.length);
     }
 
     private void increaseArraySize() {
@@ -68,5 +73,4 @@ public class Repository {
             publications = newPublications;
         }
     }
-
 }

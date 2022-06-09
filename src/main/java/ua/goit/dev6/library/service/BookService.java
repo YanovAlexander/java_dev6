@@ -1,4 +1,7 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.service;
+
+import ua.goit.dev6.library.repository.Repository;
+import ua.goit.dev6.library.model.Book;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package ua.goit.dev6.library;
+package ua.goit.dev6.library.model;
 
 import java.util.Objects;
 
@@ -11,7 +11,6 @@ public class Journal extends Publication {
         this.number = number;
         this.publicationYear = publicationYear;
     }
-
 
     @Override
     public String print() {
@@ -30,5 +29,4 @@ public class Journal extends Publication {
     public int hashCode() {
         return Objects.hash(super.hashCode(), number, publicationYear);
     }
-
 }
