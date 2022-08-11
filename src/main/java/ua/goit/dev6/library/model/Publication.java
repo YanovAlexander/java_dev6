@@ -11,6 +11,22 @@ public class Publication {
         this.countPages = countPages;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCountPages() {
+        return countPages;
+    }
+
+    public void setCountPages(int countPages) {
+        this.countPages = countPages;
+    }
+
     public String print() {
         String result = "name= " + name + ", countPages= " + countPages;
         return result;

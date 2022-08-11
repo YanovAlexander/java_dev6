@@ -10,6 +10,14 @@ public class Book extends Publication {
         this.author = author;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String print() {
         return "Book{" + super.print() + ", author= " + author + "}";
