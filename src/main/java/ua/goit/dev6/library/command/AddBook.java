@@ -1,17 +1,18 @@
 package ua.goit.dev6.library.command;
 
-import ua.goit.dev6.library.model.Book;
-import ua.goit.dev6.library.repository.Repository;
+import ua.goit.dev6.library.model.dto.AuthorDto;
+import ua.goit.dev6.library.model.dto.BookDto;
+import ua.goit.dev6.library.service.BookService;
 import ua.goit.dev6.library.view.View;
 
 public class AddBook implements Command {
     public static final String ADD_BOOK = "add_book";
     private final View view;
-    private final Repository repository;
+    private final BookService bookService;
 
-    public AddBook(View view, Repository repository) {
+    public AddBook(View view, BookService bookService) {
         this.view = view;
-        this.repository = repository;
+        this.bookService = bookService;
     }
 
     @Override
@@ -33,10 +34,19 @@ public class AddBook implements Command {
                 view.write("Invalid value. Use digits");
             }
         }
-        view.write("Enter author of the book: ");
-        String author = view.read();
-        Book book = new Book(name, pageCount, author);
-        repository.add(book);
+
+        BookDto book = new BookDto(name, pageCount, createAuthor());
+        bookService.save(book);
         view.write("Book added. Thank you!");
+    }
+
+    private AuthorDto createAuthor() {
+        view.write("Enter author first name: ");
+        String firstName = view.read();
+        view.write("Enter author last name: ");
+        String lastName = view.read();
+        view.write("Enter author email: ");
+        String email = view.read();
+        return new AuthorDto(firstName, lastName, email);
     }
 }

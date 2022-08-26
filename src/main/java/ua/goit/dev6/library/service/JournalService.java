@@ -20,7 +20,7 @@ public class JournalService {
         int year = getIntValue(scanner, "enter year of publication, please: ");
 
         Journal journal = new Journal(name, pageCount, number, year);
-        repository.add(journal);
+        repository.save(journal);
         System.out.println("Journal successfully added");
     }
 

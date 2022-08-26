@@ -3,12 +3,27 @@ package ua.goit.dev6.library.model;
 import java.util.Objects;
 
 public class Publication {
+    private Integer id;
     private String name;
-    private int countPages;
+    private Integer countPages;
 
-    public Publication(String name, int countPages) {
+    public Publication(Integer id, String name, Integer countPages) {
+        this.id = id;
         this.name = name;
         this.countPages = countPages;
+    }
+
+    public Publication(String name, Integer countPages) {
+        this.name = name;
+        this.countPages = countPages;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -19,11 +34,11 @@ public class Publication {
         this.name = name;
     }
 
-    public int getCountPages() {
+    public Integer getCountPages() {
         return countPages;
     }
 
-    public void setCountPages(int countPages) {
+    public void setCountPages(Integer countPages) {
         this.countPages = countPages;
     }
 
@@ -44,6 +59,4 @@ public class Publication {
     public int hashCode() {
         return Objects.hash(name, countPages);
     }
-
-
 }

@@ -7,9 +7,12 @@ import ua.goit.dev6.library.command.Help;
 import ua.goit.dev6.library.config.DatabaseManagerConnector;
 import ua.goit.dev6.library.config.PropertiesConfig;
 import ua.goit.dev6.library.controller.Library;
-import ua.goit.dev6.library.repository.InMemoryArrayRepository;
-import ua.goit.dev6.library.repository.Repository;
-import ua.goit.dev6.library.service.JournalService;
+import ua.goit.dev6.library.repository.AuthorRepository;
+import ua.goit.dev6.library.repository.BookRepository;
+import ua.goit.dev6.library.service.AuthorService;
+import ua.goit.dev6.library.service.BookService;
+import ua.goit.dev6.library.service.converter.AuthorConverter;
+import ua.goit.dev6.library.service.converter.BookConverter;
 import ua.goit.dev6.library.view.Console;
 import ua.goit.dev6.library.view.View;
 
@@ -26,17 +29,21 @@ public class Main {
         PropertiesConfig propertiesConfig = new PropertiesConfig();
         Properties properties = propertiesConfig.loadProperties("application.properties");
 
-        DatabaseManagerConnector connector = new DatabaseManagerConnector(properties, dbUsername, dbPassword);
-        connector.getConnection();
-        Repository repository = new InMemoryArrayRepository();
-        JournalService journalService = new JournalService(repository);
+        DatabaseManagerConnector manager = new DatabaseManagerConnector(properties, dbUsername, dbPassword);
         Scanner scanner = new Scanner(System.in);
         View view = new Console(scanner);
+
+        AuthorRepository authorRepository = new AuthorRepository(manager);
+        AuthorConverter authorConverter = new AuthorConverter();
+        AuthorService authorService = new AuthorService(authorRepository, authorConverter);
+        BookRepository bookRepository = new BookRepository(manager);
+        BookConverter bookConverter = new BookConverter(authorConverter);
+        BookService bookService = new BookService(authorService, bookRepository, bookConverter);
 
         List<Command> commands = new ArrayList<>();
         commands.add(new Help(view));
         commands.add(new Exit(view));
-        commands.add(new AddBook(view,repository));
+        commands.add(new AddBook(view, bookService));
 
         Library library = new Library(view, commands);
 

@@ -1,12 +1,10 @@
 package ua.goit.dev6.library.repository;
 
-import ua.goit.dev6.library.model.Publication;
+import java.util.List;
 
-public interface Repository {
-    void add(Publication publication);
-    void delete(int index);
-    void delete(Publication publication);
-    Publication find(int index);
-    boolean contains(Publication publication);
-    Publication[] findAll();
+public interface Repository<T> {
+    T save(T entity);
+    void delete(T entity);
+    T findById(int id);
+    List<T> findAll();
 }
