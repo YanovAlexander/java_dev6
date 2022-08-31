@@ -1,10 +1,14 @@
 package ua.goit.dev6.library.service;
 
+import ua.goit.dev6.library.exceptions.AuthorAlreadyExistException;
 import ua.goit.dev6.library.model.dao.AuthorDao;
 import ua.goit.dev6.library.model.dao.BookDao;
+import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.converter.BookConverter;
+
+import java.util.Optional;
 
 public class BookService {
     private AuthorService authorService;
@@ -18,7 +22,10 @@ public class BookService {
     }
 
     public void save(BookDto dto) {
-        AuthorDao saveAuthor = authorService.save(dto.getAuthor());
+        AuthorDao saveAuthor = authorService.findByEmail(dto.getAuthor().getEmail())
+                .orElseGet(() -> authorService.save(dto.getAuthor()));
+
+        authorService.validateAuthor(saveAuthor, dto.getAuthor());
         BookDao book = converter.to(dto);
         book.setAuthor(saveAuthor);
         bookRepository.save(book);

@@ -1,5 +1,6 @@
 package ua.goit.dev6.library.command;
 
+import ua.goit.dev6.library.exceptions.AuthorAlreadyExistException;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
 import ua.goit.dev6.library.service.BookService;
@@ -34,11 +35,18 @@ public class AddBook implements Command {
                 view.write("Invalid value. Use digits");
             }
         }
-
-        BookDto book = new BookDto(name, pageCount, createAuthor());
-        bookService.save(book);
+        while(true) {
+            try {
+                BookDto book = new BookDto(name, pageCount, createAuthor());
+                bookService.save(book);
+                break;
+            } catch (AuthorAlreadyExistException exception) {
+                view.write(exception.getMessage());
+            }
+        }
         view.write("Book added. Thank you!");
     }
+
 
     private AuthorDto createAuthor() {
         view.write("Enter author first name: ");
