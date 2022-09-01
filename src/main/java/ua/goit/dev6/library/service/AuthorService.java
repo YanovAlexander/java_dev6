@@ -18,19 +18,21 @@ public class AuthorService {
         this.authorConverter = authorConverter;
     }
 
-    public AuthorDao save(AuthorDto dto) {
-        return repository.save(authorConverter.to(dto));
+    public AuthorDto save(AuthorDto dto) {
+        AuthorDao authorDao = repository.save(authorConverter.to(dto));
+        return authorConverter.from(authorDao);
     }
 
-    public Optional<AuthorDao> findByEmail(String email) {
-        return repository.findByEmail(email);
+    public Optional<AuthorDto> findByEmail(String email) {
+        Optional<AuthorDao> byEmail = repository.findByEmail(email);
+        return byEmail.map(authorDao -> authorConverter.from(authorDao));
     }
 
-    public void validateAuthor(AuthorDao authorDao, AuthorDto authorDto) {
-        if(!authorDao.getFirstName().equals(authorDto.getFirstName()) ||
-                !authorDao.getLastName().equals(authorDto.getLastName())) {
+    public void validateAuthor(AuthorDto savedAuthor, AuthorDto newAuthor) {
+        if(!savedAuthor.getFirstName().equals(newAuthor.getFirstName()) ||
+                !savedAuthor.getLastName().equals(newAuthor.getLastName())) {
             throw new AuthorAlreadyExistException(String.format("Author with email %s already exist with different " +
-                            "name %s %s" , authorDto.getEmail(), authorDto.getFirstName(), authorDto.getLastName()));
+                            "name %s %s" , savedAuthor.getEmail(), savedAuthor.getFirstName(), savedAuthor.getLastName()));
         }
     }
 }

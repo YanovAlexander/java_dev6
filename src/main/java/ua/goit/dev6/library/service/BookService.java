@@ -22,12 +22,12 @@ public class BookService {
     }
 
     public void save(BookDto dto) {
-        AuthorDao saveAuthor = authorService.findByEmail(dto.getAuthor().getEmail())
+        AuthorDto authorDto = authorService.findByEmail(dto.getAuthor().getEmail())
                 .orElseGet(() -> authorService.save(dto.getAuthor()));
 
-        authorService.validateAuthor(saveAuthor, dto.getAuthor());
+        authorService.validateAuthor(authorDto, dto.getAuthor());
+        dto.setAuthor(authorDto);
         BookDao book = converter.to(dto);
-        book.setAuthor(saveAuthor);
         bookRepository.save(book);
     }
 }

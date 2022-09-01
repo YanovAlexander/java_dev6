@@ -6,7 +6,12 @@ import ua.goit.dev6.library.model.dto.AuthorDto;
 public class AuthorConverter implements Converter<AuthorDto, AuthorDao>{
     @Override
     public AuthorDto from(AuthorDao entity) {
-        return null;
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setId(entity.getId());
+        authorDto.setFirstName(entity.getFirstName());
+        authorDto.setLastName(entity.getLastName());
+        authorDto.setEmail(entity.getEmail());
+        return authorDto;
     }
 
     @Override
