@@ -6,6 +6,9 @@ import ua.goit.dev6.library.model.dto.BookDto;
 import ua.goit.dev6.library.service.BookService;
 import ua.goit.dev6.library.view.View;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class AddBook implements Command {
     public static final String ADD_BOOK = "add_book";
     private final View view;
@@ -35,7 +38,7 @@ public class AddBook implements Command {
                 view.write("Invalid value. Use digits");
             }
         }
-        while(true) {
+        while (true) {
             try {
                 BookDto book = new BookDto(name, pageCount, createAuthor());
                 bookService.save(book);
@@ -47,14 +50,21 @@ public class AddBook implements Command {
         view.write("Book added. Thank you!");
     }
 
-
-    private AuthorDto createAuthor() {
-        view.write("Enter author first name: ");
-        String firstName = view.read();
-        view.write("Enter author last name: ");
-        String lastName = view.read();
-        view.write("Enter author email: ");
-        String email = view.read();
-        return new AuthorDto(firstName, lastName, email);
+    private Set<AuthorDto> createAuthor() {
+        Set<AuthorDto> authors = new HashSet<>();
+        while (true) {
+            view.write("Enter author first name: ");
+            String firstName = view.read();
+            view.write("Enter author last name: ");
+            String lastName = view.read();
+            view.write("Enter author email: ");
+            String email = view.read();
+            authors.add(new AuthorDto(firstName, lastName, email));
+            view.write("to add the next author, enter yes, or to exit, enter no");
+            if (view.read().equals("no")) {
+                break;
+            }
+        }
+        return authors;
     }
 }

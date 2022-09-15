@@ -1,22 +1,26 @@
 package ua.goit.dev6.library.model.dao;
 
+import java.util.Set;
+
 public class BookDao {
     private Integer id;
     private String name;
     private Integer countPages;
-    private AuthorDao author;
+    private Set<AuthorDao> authors;
 
-    public BookDao(Integer id, String name, Integer countPages, AuthorDao author) {
+    public BookDao(Integer id, String name, Integer countPages, Set<AuthorDao> authors) {
         this.id = id;
         this.name = name;
         this.countPages = countPages;
-        this.author = author;
+        this.authors=authors;
     }
 
-    public BookDao(String name, Integer countPages, AuthorDao author) {
-        this.name = name;
-        this.countPages = countPages;
-        this.author = author;
+    public Set<AuthorDao> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<AuthorDao> authors) {
+        this.authors = authors;
     }
 
     public BookDao() {
@@ -44,13 +48,5 @@ public class BookDao {
 
     public void setCountPages(Integer countPages) {
         this.countPages = countPages;
-    }
-
-    public AuthorDao getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(AuthorDao author) {
-        this.author = author;
     }
 }

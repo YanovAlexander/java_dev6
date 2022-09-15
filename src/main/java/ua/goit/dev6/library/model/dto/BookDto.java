@@ -1,30 +1,34 @@
 package ua.goit.dev6.library.model.dto;
 
+import ua.goit.dev6.library.model.dao.AuthorDao;
+
+import java.util.Set;
+
 public class BookDto {
     private Integer id;
     private String name;
     private Integer countPages;
-    private AuthorDto author;
+    private Set<AuthorDto> authors;
 
-    public BookDto(Integer id, String name, int countPages, AuthorDto author) {
+    public BookDto(Integer id, String name, int countPages, Set<AuthorDto> authors) {
         this.id = id;
         this.name = name;
         this.countPages = countPages;
-        this.author = author;
+        this.authors = authors;
     }
 
-    public BookDto(String name, int countPages, AuthorDto author) {
+    public BookDto(String name, int countPages, Set<AuthorDto> authors) {
         this.name = name;
         this.countPages = countPages;
-        this.author = author;
+        this.authors = authors;
     }
 
-    public AuthorDto getAuthor() {
-        return author;
+    public Set<AuthorDto> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(AuthorDto author) {
-        this.author = author;
+    public void setAuthors(Set<AuthorDto> authors) {
+        this.authors = authors;
     }
 
     public Integer getId() {

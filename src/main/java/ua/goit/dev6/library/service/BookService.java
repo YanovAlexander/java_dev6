@@ -9,6 +9,8 @@ import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.converter.BookConverter;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BookService {
     private AuthorService authorService;
@@ -22,11 +24,11 @@ public class BookService {
     }
 
     public void save(BookDto dto) {
-        AuthorDto authorDto = authorService.findByEmail(dto.getAuthor().getEmail())
-                .orElseGet(() -> authorService.save(dto.getAuthor()));
+        Set<AuthorDto> authors = dto.getAuthors().stream().map(author -> authorService.findByEmail(author.getEmail())
+                .orElseGet(() -> authorService.save(author))).collect(Collectors.toSet());
 
-        authorService.validateAuthor(authorDto, dto.getAuthor());
-        dto.setAuthor(authorDto);
+        //authorService.validateAuthor(authorDto, dto.getAuthor());
+        dto.setAuthors(authors);
         BookDao book = converter.to(dto);
         bookRepository.save(book);
     }
