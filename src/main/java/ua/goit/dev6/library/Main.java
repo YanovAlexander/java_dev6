@@ -7,6 +7,7 @@ import ua.goit.dev6.library.command.Help;
 import ua.goit.dev6.library.config.DatabaseManagerConnector;
 import ua.goit.dev6.library.config.PropertiesConfig;
 import ua.goit.dev6.library.controller.Library;
+import ua.goit.dev6.library.repository.AuthorBookRelationRepository;
 import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.AuthorService;
@@ -34,11 +35,12 @@ public class Main {
         View view = new Console(scanner);
 
         AuthorRepository authorRepository = new AuthorRepository(manager);
+        AuthorBookRelationRepository authorBookRelationRepository = new AuthorBookRelationRepository(manager);
         AuthorConverter authorConverter = new AuthorConverter();
         AuthorService authorService = new AuthorService(authorRepository, authorConverter);
         BookRepository bookRepository = new BookRepository(manager);
         BookConverter bookConverter = new BookConverter(authorConverter);
-        BookService bookService = new BookService(authorService, bookRepository, bookConverter);
+        BookService bookService = new BookService(authorService, bookRepository, bookConverter, authorBookRelationRepository);
 
         List<Command> commands = new ArrayList<>();
         commands.add(new Help(view));
