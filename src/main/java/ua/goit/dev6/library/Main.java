@@ -1,5 +1,6 @@
 package ua.goit.dev6.library;
 
+import org.apache.log4j.Logger;
 import ua.goit.dev6.library.command.AddBook;
 import ua.goit.dev6.library.command.Command;
 import ua.goit.dev6.library.command.Exit;
@@ -24,7 +25,10 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
+    private static final Logger LOG = Logger.getLogger(Main.class);
+
     public static void main(String[] args) throws SQLException {
+        LOG.debug("Application starting...");
         String dbPassword = System.getenv("dbPassword");
         String dbUsername = System.getenv("dbusername");
         PropertiesConfig propertiesConfig = new PropertiesConfig();
@@ -48,7 +52,7 @@ public class Main {
         commands.add(new AddBook(view, bookService));
 
         Library library = new Library(view, commands);
-
+        LOG.debug("Application initialized...");
         library.run();
     }
 }

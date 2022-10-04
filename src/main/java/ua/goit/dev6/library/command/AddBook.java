@@ -1,5 +1,6 @@
 package ua.goit.dev6.library.command;
 
+import org.apache.log4j.Logger;
 import ua.goit.dev6.library.exceptions.AuthorAlreadyExistException;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
@@ -13,6 +14,7 @@ public class AddBook implements Command {
     public static final String ADD_BOOK = "add_book";
     private final View view;
     private final BookService bookService;
+    private final static Logger LOG = Logger.getLogger(AddBook.class);
 
     public AddBook(View view, BookService bookService) {
         this.view = view;
@@ -35,6 +37,7 @@ public class AddBook implements Command {
                 pageCount = Integer.parseInt(view.read());
                 break;
             } catch (NumberFormatException e) {
+                LOG.warn("User provided wrong number", e);
                 view.write("Invalid value. Use digits");
             }
         }
@@ -44,6 +47,7 @@ public class AddBook implements Command {
                 bookService.save(book);
                 break;
             } catch (AuthorAlreadyExistException exception) {
+                LOG.warn("User provided already exists author", exception);
                 view.write(exception.getMessage());
             }
         }

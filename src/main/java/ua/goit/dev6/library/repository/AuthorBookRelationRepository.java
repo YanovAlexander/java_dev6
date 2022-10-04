@@ -1,5 +1,6 @@
 package ua.goit.dev6.library.repository;
 
+import org.apache.log4j.Logger;
 import ua.goit.dev6.library.config.DatabaseManagerConnector;
 import ua.goit.dev6.library.model.dao.AuthorDao;
 
@@ -10,6 +11,7 @@ public class AuthorBookRelationRepository {
 
     private final DatabaseManagerConnector manager;
     private static final String INSERT = "INSERT INTO author_book_relation(author_id, book_id) VALUES(?,?)";
+    private static final Logger LOG = Logger.getLogger(AuthorBookRelationRepository.class);
 
 
     public AuthorBookRelationRepository(DatabaseManagerConnector manager) {
@@ -32,7 +34,7 @@ public class AuthorBookRelationRepository {
             }
             statement.execute();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            LOG.error(String.format("Save authorBookRelation with bookId %s", bookId), ex);
             throw new RuntimeException("Author not created");
         }
     }
