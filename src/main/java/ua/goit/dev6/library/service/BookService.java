@@ -9,7 +9,7 @@ import ua.goit.dev6.library.repository.AuthorBookRelationRepository;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.converter.BookConverter;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,5 +37,18 @@ public class BookService {
         BookDao book = converter.to(dto);
         bookRepository.save(book);
         authorBookRelationRepository.save(authorsIds, book.getId());
+    }
+
+    public List<BookDto> findByName(String bookName) {
+        List<BookDao> books = bookRepository.findByName(bookName);
+
+        books.forEach(book -> {
+            Set<AuthorDao> authors = authorService.findByBookId(book.getId());
+            book.setAuthors(authors);
+        });
+
+        return books.stream()
+                .map(book -> converter.from(book))
+                .collect(Collectors.toList());
     }
 }

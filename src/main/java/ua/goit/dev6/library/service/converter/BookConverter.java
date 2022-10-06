@@ -15,7 +15,14 @@ public class BookConverter implements Converter<BookDto, BookDao>{
 
     @Override
     public BookDto from(BookDao entity) {
-        return null;
+        BookDto dto = new BookDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setCountPages(entity.getCountPages());
+        dto.setAuthors(entity.getAuthors().stream()
+                .map(converter::from)
+                .collect(Collectors.toSet()));
+        return dto;
     }
 
     @Override

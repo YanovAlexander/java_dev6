@@ -7,6 +7,7 @@ import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.service.converter.AuthorConverter;
 
 import java.util.Optional;
+import java.util.Set;
 
 public class AuthorService {
 
@@ -34,5 +35,9 @@ public class AuthorService {
             throw new AuthorAlreadyExistException(String.format("Author with email %s already exist with different " +
                             "name %s %s" , savedAuthor.getEmail(), savedAuthor.getFirstName(), savedAuthor.getLastName()));
         }
+    }
+
+    public Set<AuthorDao> findByBookId(Integer bookId) {
+        return repository.findByBookId(bookId);
     }
 }

@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS author_book_relation(
     author_id INT REFERENCES author(id),
     book_id INT REFERENCES BOOK(id),
     UNIQUE(author_id, book_id)
-)
+);
 
 INSERT INTO author_book_relation
     (book_id,author_id)

@@ -23,6 +23,9 @@ public class BookDto {
         this.authors = authors;
     }
 
+    public BookDto() {
+    }
+
     public Set<AuthorDto> getAuthors() {
         return authors;
     }

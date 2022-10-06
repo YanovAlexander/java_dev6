@@ -2,11 +2,11 @@ package ua.goit.dev6.library.repository;
 
 import ua.goit.dev6.library.config.DatabaseManagerConnector;
 import ua.goit.dev6.library.model.dao.AuthorDao;
+import ua.goit.dev6.library.model.dao.BookDao;
 
-import java.lang.reflect.Proxy;
 import java.sql.*;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AuthorRepository implements Repository<AuthorDao>{
 
@@ -14,6 +14,9 @@ public class AuthorRepository implements Repository<AuthorDao>{
     private static final String INSERT = "INSERT INTO author(first_name, last_name, email) VALUES(?,?,?)";
     private static final String SELECT_BY_EMAIL = "SELECT id, first_name, last_name, email " +
             "FROM AUTHOR WHERE email like ?";
+    private static final String SELECT_BY_BOOK_ID = "SELECT a.id, a.first_name, a.last_name, a.email FROM author a " +
+            "INNER JOIN author_book_relation abr ON a.id = abr.author_id " +
+            "WHERE abr.book_id=?";
 
     public AuthorRepository(DatabaseManagerConnector manager) {
         this.manager = manager;
@@ -57,6 +60,46 @@ public class AuthorRepository implements Repository<AuthorDao>{
         return null;
     }
 
+    @Override
+    public List<BookDao> findByName(String bookName) {
+        return null;
+    }
+
+    @Override
+    public Set<AuthorDao> findByIds(List<Integer> authorIds) {
+        String selectByIds = String.format("SELECT id, first_name, last_name, email FROM author WHERE id IN(%s)",
+                authorIds.stream()
+                .map(v -> "?")
+                .collect(Collectors.joining(", ")));
+
+        try(Connection connection = manager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(selectByIds)) {
+            int index = 1;
+            for (Integer authorId: authorIds) {
+                statement.setInt(index, authorId);
+                index++;
+            }
+            ResultSet resultSet = statement.executeQuery();
+            return mapAuthorDaos(resultSet);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<AuthorDao> findByBookId(Integer bookId) {
+        try(Connection connection = manager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SELECT_BY_BOOK_ID)) {
+            statement.setInt(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            return mapAuthorDaos(resultSet);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return new HashSet<>();
+    }
+
     public Optional<AuthorDao> findByEmail(String email) {
         try(Connection connection = manager.getConnection();
             PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL)) {
@@ -73,12 +116,25 @@ public class AuthorRepository implements Repository<AuthorDao>{
     private AuthorDao mapAuthorDao(ResultSet resultSet) throws SQLException {
         AuthorDao author = null;
         while (resultSet.next()) {
-            author = new AuthorDao();
-            author.setId(resultSet.getInt("id"));
-            author.setFirstName(resultSet.getString("first_name"));
-            author.setLastName(resultSet.getString("last_name"));
-            author.setEmail(resultSet.getString("email"));
+            author = mapAuthor(resultSet);
         }
+        return author;
+    }
+
+    private Set<AuthorDao> mapAuthorDaos(ResultSet resultSet) throws SQLException {
+        Set<AuthorDao> authors = new HashSet<>();
+        while (resultSet.next()) {
+            authors.add(mapAuthor(resultSet));
+        }
+        return authors;
+    }
+
+    private AuthorDao mapAuthor(ResultSet resultSet) throws SQLException {
+        AuthorDao author = new AuthorDao();
+        author.setId(resultSet.getInt("id"));
+        author.setFirstName(resultSet.getString("first_name"));
+        author.setLastName(resultSet.getString("last_name"));
+        author.setEmail(resultSet.getString("email"));
         return author;
     }
 }

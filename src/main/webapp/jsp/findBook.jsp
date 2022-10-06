@@ -35,26 +35,33 @@
 
         <table>
             <thead>
-                <tr>
-                    <td style="text-align: center">Book name:</td>
-                    <td style="text-align: center">Count pages:</td>
-                    <td style="text-align: center">Authors:</td>
-                </tr>
+                <c:if test="${not empty books}">
+                    <tr>
+                        <td style="text-align: center">Book name:</td>
+                        <td style="text-align: center">Count pages:</td>
+                        <td style="text-align: center">Authors:</td>
+                    </tr>
+                </c:if>
+                <c:if test="${empty books}">
+                    <p>There is not books by specified name</p>
+                </c:if>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <c:out value="${book.name}"/>
-                    </td>
-                    <td>
-                        <c:out value="${book.countPages}"/>
-                    </td>
-                    <td>
-                         <c:forEach var = "author" items="${book.authors}">
-                             <a href="#"><c:out value = "${author.firstName}"/> <c:out value = "${author.lastName}"/></a>
-                         </c:forEach>
-                    </td>
-                </tr>
+                <c:forEach var = "book" items="${books}">
+                    <tr>
+                        <td>
+                            <c:out value="${book.name}"/>
+                        </td>
+                        <td>
+                            <c:out value="${book.countPages}"/>
+                        </td>
+                        <td>
+                             <c:forEach var = "author" items="${book.authors}">
+                                 <a href="#"><c:out value = "${author.firstName}"/> <c:out value = "${author.lastName}"/></a>
+                             </c:forEach>
+                        </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </body>
