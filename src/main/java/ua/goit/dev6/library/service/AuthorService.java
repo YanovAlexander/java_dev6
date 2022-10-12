@@ -6,6 +6,8 @@ import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.service.converter.AuthorConverter;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,10 +33,10 @@ public class AuthorService {
     }
 
     public void validateAuthor(AuthorDto savedAuthor, AuthorDto newAuthor) {
-        if(!savedAuthor.getFirstName().equals(newAuthor.getFirstName()) ||
+        if (!savedAuthor.getFirstName().equals(newAuthor.getFirstName()) ||
                 !savedAuthor.getLastName().equals(newAuthor.getLastName())) {
             throw new AuthorAlreadyExistException(String.format("Author with email %s already exist with different " +
-                            "name %s %s" , savedAuthor.getEmail(), savedAuthor.getFirstName(), savedAuthor.getLastName()));
+                    "name %s %s", savedAuthor.getEmail(), savedAuthor.getFirstName(), savedAuthor.getLastName()));
         }
     }
 
@@ -44,6 +46,12 @@ public class AuthorService {
 
     public Set<AuthorDto> findAll() {
         return repository.findAll().stream()
+                .map(authorConverter::from)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AuthorDto> findByIds(List<Integer> ids) {
+        return repository.findByIds(ids).stream()
                 .map(authorConverter::from)
                 .collect(Collectors.toSet());
     }

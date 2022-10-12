@@ -10,15 +10,6 @@
     </head>
     <body>
         <c:import url="${contextPath}/WEB-INF/jsp/navigation.jsp"/>
-        <form action="/books" method="post">
-            <label for="bookName"> Book name: </label><br>
-            <input type="text" id="bookName" name="bookName"><br>
-            <label for="countPages"> Count pages: </label><br>
-            <input type="number" id="countPages" name="countPages"><br>
-            <c:forEach var = "author" items="${authors}">
-              <input type="checkbox" name="authorId" value="${author.id}">${author.firstName} ${author.lastName}</input><br/>
-            </c:forEach><br>
-            <button type="submit">Create book</button>
-        </form>
+        <p>Book saved</p>
     </body>
 </html>

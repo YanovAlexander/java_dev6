@@ -24,7 +24,7 @@ public class CreateBookFormController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         String dbPassword = System.getenv("dbPassword");
-        String dbUsername = System.getenv("dbusername");
+        String dbUsername = System.getenv("dbUsername");
         PropertiesConfig propertiesConfig = new PropertiesConfig();
         Properties properties = propertiesConfig.loadProperties("application.properties");
         DatabaseManagerConnector connector = new DatabaseManagerConnector(properties, dbUsername, dbPassword);
