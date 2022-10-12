@@ -52,7 +52,7 @@ public class BookRepository implements Repository<BookDao> {
     }
 
     @Override
-    public List<BookDao> findAll() {
+    public Set<AuthorDao> findAll() {
         return null;
     }
 

@@ -8,6 +8,7 @@ import ua.goit.dev6.library.service.converter.AuthorConverter;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AuthorService {
 
@@ -39,5 +40,11 @@ public class AuthorService {
 
     public Set<AuthorDao> findByBookId(Integer bookId) {
         return repository.findByBookId(bookId);
+    }
+
+    public Set<AuthorDto> findAll() {
+        return repository.findAll().stream()
+                .map(authorConverter::from)
+                .collect(Collectors.toSet());
     }
 }

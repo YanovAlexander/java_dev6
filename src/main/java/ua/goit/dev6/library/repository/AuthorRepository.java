@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AuthorRepository implements Repository<AuthorDao>{
+public class AuthorRepository implements Repository<AuthorDao> {
 
     private final DatabaseManagerConnector manager;
     private static final String INSERT = "INSERT INTO author(first_name, last_name, email) VALUES(?,?,?)";
@@ -17,6 +17,7 @@ public class AuthorRepository implements Repository<AuthorDao>{
     private static final String SELECT_BY_BOOK_ID = "SELECT a.id, a.first_name, a.last_name, a.email FROM author a " +
             "INNER JOIN author_book_relation abr ON a.id = abr.author_id " +
             "WHERE abr.book_id=?";
+    private static final String SELECT_ALL = "SELECT a.id, a.first_name, a.last_name, a.email FROM author a";
 
     public AuthorRepository(DatabaseManagerConnector manager) {
         this.manager = manager;
@@ -25,7 +26,7 @@ public class AuthorRepository implements Repository<AuthorDao>{
     @Override
     public AuthorDao save(AuthorDao entity) {
         try (Connection connection = manager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
+             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
             statement.setString(3, entity.getEmail());
@@ -33,8 +34,7 @@ public class AuthorRepository implements Repository<AuthorDao>{
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     entity.setId(generatedKeys.getInt(1));
-                }
-                else {
+                } else {
                     throw new SQLException("Creating author failed, no ID obtained.");
                 }
             }
@@ -56,8 +56,15 @@ public class AuthorRepository implements Repository<AuthorDao>{
     }
 
     @Override
-    public List<AuthorDao> findAll() {
-        return null;
+    public Set<AuthorDao> findAll() {
+        try (Connection connection = manager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL)) {
+            ResultSet resultSet = statement.executeQuery();
+             return mapAuthorDaos(resultSet);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return new HashSet<>();
     }
 
     @Override
@@ -69,13 +76,13 @@ public class AuthorRepository implements Repository<AuthorDao>{
     public Set<AuthorDao> findByIds(List<Integer> authorIds) {
         String selectByIds = String.format("SELECT id, first_name, last_name, email FROM author WHERE id IN(%s)",
                 authorIds.stream()
-                .map(v -> "?")
-                .collect(Collectors.joining(", ")));
+                        .map(v -> "?")
+                        .collect(Collectors.joining(", ")));
 
-        try(Connection connection = manager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(selectByIds)) {
+        try (Connection connection = manager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(selectByIds)) {
             int index = 1;
-            for (Integer authorId: authorIds) {
+            for (Integer authorId : authorIds) {
                 statement.setInt(index, authorId);
                 index++;
             }
@@ -89,8 +96,8 @@ public class AuthorRepository implements Repository<AuthorDao>{
 
     @Override
     public Set<AuthorDao> findByBookId(Integer bookId) {
-        try(Connection connection = manager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_BY_BOOK_ID)) {
+        try (Connection connection = manager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_BOOK_ID)) {
             statement.setInt(1, bookId);
             ResultSet resultSet = statement.executeQuery();
             return mapAuthorDaos(resultSet);
@@ -101,8 +108,8 @@ public class AuthorRepository implements Repository<AuthorDao>{
     }
 
     public Optional<AuthorDao> findByEmail(String email) {
-        try(Connection connection = manager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL)) {
+        try (Connection connection = manager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL)) {
             statement.setString(1, "%" + email + "%");
             ResultSet resultSet = statement.executeQuery();
             AuthorDao authorDao = mapAuthorDao(resultSet);

@@ -10,7 +10,7 @@ public interface Repository<T> {
     T save(T entity);
     void delete(T entity);
     T findById(int id);
-    List<T> findAll();
+    Set<AuthorDao> findAll();
     List<BookDao> findByName(String bookName);
     Set<AuthorDao> findByIds(List<Integer> authorIds);
     Set<AuthorDao> findByBookId(Integer bookId);
