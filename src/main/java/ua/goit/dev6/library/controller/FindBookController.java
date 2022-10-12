@@ -45,6 +45,6 @@ public class FindBookController extends HttpServlet {
         String bookName = req.getParameter("bookName");
         List<BookDto> books = bookService.findByName(bookName);
         req.setAttribute("books", books);
-        req.getRequestDispatcher("/jsp/findBook.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/findBook.jsp").forward(req, resp);
     }
 }
