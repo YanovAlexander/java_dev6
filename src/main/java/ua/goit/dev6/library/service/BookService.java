@@ -42,11 +42,6 @@ public class BookService {
     public List<BookDto> findByName(String bookName) {
         List<BookDao> books = bookRepository.findByName(bookName);
 
-        books.forEach(book -> {
-            Set<AuthorDao> authors = authorService.findByBookId(book.getId());
-            book.setAuthors(authors);
-        });
-
         return books.stream()
                 .map(book -> converter.from(book))
                 .collect(Collectors.toList());

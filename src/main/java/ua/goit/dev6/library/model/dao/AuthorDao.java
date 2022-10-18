@@ -1,10 +1,13 @@
 package ua.goit.dev6.library.model.dao;
 
+import java.util.Set;
+
 public class AuthorDao {
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
+    private Set<BookDao> books;
 
     public AuthorDao(Integer id, String firstName, String lastName, String email) {
         this.id = id;
@@ -52,5 +55,13 @@ public class AuthorDao {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<BookDao> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<BookDao> books) {
+        this.books = books;
     }
 }

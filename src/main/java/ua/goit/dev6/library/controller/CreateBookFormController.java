@@ -1,7 +1,7 @@
 package ua.goit.dev6.library.controller;
 
 import ua.goit.dev6.library.config.DatabaseManagerConnector;
-import ua.goit.dev6.library.config.PropertiesConfig;
+import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.service.AuthorService;
@@ -23,12 +23,8 @@ public class CreateBookFormController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String dbPassword = System.getenv("dbPassword");
-        String dbUsername = System.getenv("dbUsername");
-        PropertiesConfig propertiesConfig = new PropertiesConfig();
-        Properties properties = propertiesConfig.loadProperties("application.properties");
-        DatabaseManagerConnector connector = new DatabaseManagerConnector(properties, dbUsername, dbPassword);
-        AuthorRepository authorRepository = new AuthorRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        AuthorRepository authorRepository = new AuthorRepository(dbProvider);
         AuthorConverter authorConverter = new AuthorConverter();
         authorService = new AuthorService(authorRepository, authorConverter);
     }

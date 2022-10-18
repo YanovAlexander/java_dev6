@@ -1,6 +1,6 @@
 package ua.goit.dev6.library.controller;
 
-import ua.goit.dev6.library.config.DatabaseManagerConnector;
+import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.config.PropertiesConfig;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
@@ -31,16 +31,12 @@ public class BookController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String dbPassword = System.getenv("dbPassword");
-        String dbUsername = System.getenv("dbUsername");
-        PropertiesConfig propertiesConfig = new PropertiesConfig();
-        Properties properties = propertiesConfig.loadProperties("application.properties");
-        DatabaseManagerConnector connector = new DatabaseManagerConnector(properties, dbUsername, dbPassword);
-        AuthorRepository authorRepository = new AuthorRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        AuthorRepository authorRepository = new AuthorRepository(dbProvider);
         AuthorConverter authorConverter = new AuthorConverter();
         authorService = new AuthorService(authorRepository, authorConverter);
-        BookRepository bookRepository = new BookRepository(connector);
-        AuthorBookRelationRepository authorBookRelationRepository = new AuthorBookRelationRepository(connector);
+        BookRepository bookRepository = new BookRepository(dbProvider);
+        AuthorBookRelationRepository authorBookRelationRepository = new AuthorBookRelationRepository(dbProvider);
         BookConverter bookConverter = new BookConverter(authorConverter);
         bookService = new BookService(authorService, bookRepository, bookConverter, authorBookRelationRepository);
     }
