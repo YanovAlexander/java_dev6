@@ -50,10 +50,14 @@ public class BookController extends HttpServlet {
         String bookName = req.getParameter("bookName");
         Integer countPages = Integer.parseInt(req.getParameter("countPages"));
         String[] authorIds = req.getParameterValues("authorId");
+
+
         List<Integer> authors = Arrays.stream(authorIds)
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
+
         Set<AuthorDto> savedAuthors = authorService.findByIds(authors);
+
         BookDto bookDto = new BookDto(bookName, countPages, savedAuthors);
         bookService.save(bookDto);
         req.getRequestDispatcher("/WEB-INF/jsp/savedBook.jsp").forward(req, resp);

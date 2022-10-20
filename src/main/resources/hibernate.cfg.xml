@@ -6,7 +6,7 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5455/library</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/goit_dev</property>
         <property name="connection.username">${dbUsername}</property>
         <property name="connection.password">${dbPassword}</property>
         <property name="show_sql">true</property>

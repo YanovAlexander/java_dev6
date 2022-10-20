@@ -25,23 +25,12 @@ public class BookRepository implements Repository<BookDao> {
 
     @Override
     public BookDao save(BookDao entity) {
-//        try (Connection connection = manager.getConnection();
-//             PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
-//            statement.setString(1, entity.getName());
-//            statement.setInt(2, entity.getCountPages());
-//            statement.executeUpdate();
-//            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-//                if (generatedKeys.next()) {
-//                    entity.setId(generatedKeys.getInt(1));
-//                } else {
-//                    throw new SQLException("Creating book failed, no ID obtained.");
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return entity;
-        return null;
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(entity);
+            transaction.commit();
+        }
+        return entity;
     }
 
     @Override
@@ -61,7 +50,7 @@ public class BookRepository implements Repository<BookDao> {
 
     @Override
     public List<BookDao> findByName(String bookName) {
-        try(final Session session = manager.openSession()) {
+        try (final Session session = manager.openSession()) {
             final Transaction transaction = session.beginTransaction();
             return session.createQuery("FROM BookDao as book WHERE book.name like :name")
                     .setParameter("name", "%" + bookName + "%")

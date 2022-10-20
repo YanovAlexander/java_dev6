@@ -23,14 +23,8 @@ public class BookService {
     }
 
     public void save(BookDto dto) {
-        Set<AuthorDto> authors = dto.getAuthors().stream().map(author -> authorService.findByEmail(author.getEmail())
-                .orElseGet(() -> authorService.save(author))).collect(Collectors.toSet());
-        Set<Integer> authorsIds = authors.stream().map(AuthorDto::getId).collect(Collectors.toSet());
-        //authorService.validateAuthor(authorDto, dto.getAuthor());
-        dto.setAuthors(authors);
         BookDao book = converter.to(dto);
         bookRepository.save(book);
-//        authorBookRelationRepository.save(authorsIds, book.getId());
     }
 
     public List<BookDto> findByName(String bookName) {

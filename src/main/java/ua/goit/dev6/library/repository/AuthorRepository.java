@@ -1,11 +1,15 @@
 package ua.goit.dev6.library.repository;
 
+import org.hibernate.MultiIdentifierLoadAccess;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dao.AuthorDao;
 import ua.goit.dev6.library.model.dao.BookDao;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AuthorRepository implements Repository<AuthorDao> {
 
@@ -57,15 +61,16 @@ public class AuthorRepository implements Repository<AuthorDao> {
 
     @Override
     public Set<AuthorDao> findAll() {
-//        try (Connection connection = manager.getConnection();
-//             PreparedStatement statement = connection.prepareStatement(SELECT_ALL)) {
-//            ResultSet resultSet = statement.executeQuery();
-//             return mapAuthorDaos(resultSet);
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return new HashSet<>();
-        return null;
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            return session.createQuery("Select a From AuthorDao a", AuthorDao.class)
+                    .getResultList()
+                    .stream()
+                    .collect(Collectors.toSet());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return new HashSet<>();
     }
 
     @Override
@@ -75,25 +80,17 @@ public class AuthorRepository implements Repository<AuthorDao> {
 
     @Override
     public Set<AuthorDao> findByIds(List<Integer> authorIds) {
-//        String selectByIds = String.format("SELECT id, first_name, last_name, email FROM author WHERE id IN(%s)",
-//                authorIds.stream()
-//                        .map(v -> "?")
-//                        .collect(Collectors.joining(", ")));
-//
-//        try (Connection connection = manager.getConnection();
-//             PreparedStatement statement = connection.prepareStatement(selectByIds)) {
-//            int index = 1;
-//            for (Integer authorId : authorIds) {
-//                statement.setInt(index, authorId);
-//                index++;
-//            }
-//            ResultSet resultSet = statement.executeQuery();
-//            return mapAuthorDaos(resultSet);
-//        } catch (SQLException exception) {
-//            exception.printStackTrace();
-//        }
-//        return new HashSet<>();
-        return null;
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            MultiIdentifierLoadAccess<AuthorDao> multiLoadAccess = session.byMultipleIds(AuthorDao.class);
+            return multiLoadAccess.multiLoad(authorIds)
+                    .stream()
+                    .collect(Collectors.toSet());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new HashSet<>();
     }
 
     @Override
