@@ -1,4 +1,4 @@
-package ua.goit.dev6.library.controller;
+package ua.goit.dev6.library.controller.book;
 
 import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dto.AuthorDto;
@@ -31,6 +31,6 @@ public class CreateBookFormController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Set<AuthorDto> authors = authorService.findAll();
         req.setAttribute("authors", authors);
-        req.getRequestDispatcher("/WEB-INF/jsp/createBookForm.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/book/createBookForm.jsp").forward(req, resp);
     }
 }

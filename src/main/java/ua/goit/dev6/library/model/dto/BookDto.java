@@ -8,13 +8,6 @@ public class BookDto {
     private Integer countPages;
     private Set<AuthorDto> authors;
 
-    public BookDto(Integer id, String name, int countPages, Set<AuthorDto> authors) {
-        this.id = id;
-        this.name = name;
-        this.countPages = countPages;
-        this.authors = authors;
-    }
-
     public BookDto(String name, int countPages, Set<AuthorDto> authors) {
         this.name = name;
         this.countPages = countPages;

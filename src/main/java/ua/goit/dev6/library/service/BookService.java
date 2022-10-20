@@ -1,13 +1,11 @@
 package ua.goit.dev6.library.service;
 
 import ua.goit.dev6.library.model.dao.BookDao;
-import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.converter.BookConverter;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookService {
@@ -28,7 +26,7 @@ public class BookService {
     }
 
     public List<BookDto> findByName(String bookName) {
-        List<BookDao> books = bookRepository.findByName(bookName);
+        List<BookDao> books = bookRepository.findByBookName(bookName);
 
         return books.stream()
                 .map(book -> converter.from(book))

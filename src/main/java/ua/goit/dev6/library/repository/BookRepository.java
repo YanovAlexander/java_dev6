@@ -43,8 +43,7 @@ public class BookRepository implements Repository<BookDao> {
         return null;
     }
 
-    @Override
-    public List<BookDao> findByName(String bookName) {
+    public List<BookDao> findByBookName(String bookName) {
         try (final Session session = manager.openSession()) {
             final Transaction transaction = session.beginTransaction();
             return session.createQuery("FROM BookDao as book WHERE book.name like :name", BookDao.class)

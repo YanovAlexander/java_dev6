@@ -1,4 +1,4 @@
-package ua.goit.dev6.library.controller;
+package ua.goit.dev6.library.controller.book;
 
 import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dto.AuthorDto;
@@ -42,7 +42,7 @@ public class BookController extends HttpServlet {
         String bookName = req.getParameter("bookName");
         List<BookDto> books = bookService.findByName(bookName);
         req.setAttribute("books", books);
-        req.getRequestDispatcher("/WEB-INF/jsp/findBook.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/book/findBook.jsp").forward(req, resp);
     }
 
     @Override
@@ -60,6 +60,6 @@ public class BookController extends HttpServlet {
 
         BookDto bookDto = new BookDto(bookName, countPages, savedAuthors);
         bookService.save(bookDto);
-        req.getRequestDispatcher("/WEB-INF/jsp/savedBook.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/book/savedBook.jsp").forward(req, resp);
     }
 }

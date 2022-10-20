@@ -11,13 +11,6 @@ public class BookDao {
     private Integer countPages;
     private Set<AuthorDao> authors;
 
-    public BookDao(Integer id, String name, Integer countPages, Set<AuthorDao> authors) {
-        this.id = id;
-        this.name = name;
-        this.countPages = countPages;
-        this.authors=authors;
-    }
-
     public BookDao() {
     }
 

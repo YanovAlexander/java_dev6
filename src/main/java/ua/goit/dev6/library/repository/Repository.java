@@ -11,7 +11,6 @@ public interface Repository<T> {
     void delete(T entity);
     T findById(int id);
     Set<AuthorDao> findAll();
-    List<BookDao> findByName(String bookName);
     Set<AuthorDao> findByIds(List<Integer> authorIds);
     Set<AuthorDao> findByBookId(Integer bookId);
 }

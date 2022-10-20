@@ -54,4 +54,10 @@ public class AuthorService {
                 .map(authorConverter::from)
                 .collect(Collectors.toSet());
     }
+
+    public Set<AuthorDto> findByName(String authorName) {
+        return repository.findByName(authorName).stream()
+                .map(authorConverter::from)
+                .collect(Collectors.toSet());
+    }
 }

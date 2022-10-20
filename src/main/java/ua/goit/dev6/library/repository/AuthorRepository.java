@@ -63,17 +63,25 @@ public class AuthorRepository implements Repository<AuthorDao> {
     }
 
     @Override
-    public List<BookDao> findByName(String bookName) {
-        return null;
-    }
-
-    @Override
     public Set<AuthorDao> findByIds(List<Integer> authorIds) {
         try (Session session = manager.openSession()) {
             Transaction transaction = session.beginTransaction();
 
             MultiIdentifierLoadAccess<AuthorDao> multiLoadAccess = session.byMultipleIds(AuthorDao.class);
             return new HashSet<>(multiLoadAccess.multiLoad(authorIds));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new HashSet<>();
+    }
+
+    public Set<AuthorDao> findByName(String authorName) {
+        try (Session session = manager.openSession()){
+            Transaction transaction = session.beginTransaction();
+            return new HashSet<>(session.createQuery("FROM AuthorDao as a WHERE a.firstName like :name OR a.lastName like :name"
+                            , AuthorDao.class)
+                    .setParameter("name", "%" + authorName + "%")
+                    .list());
         } catch (Exception e) {
             e.printStackTrace();
         }
