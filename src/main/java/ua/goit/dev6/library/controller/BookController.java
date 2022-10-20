@@ -1,10 +1,8 @@
 package ua.goit.dev6.library.controller;
 
 import ua.goit.dev6.library.config.HibernateProvider;
-import ua.goit.dev6.library.config.PropertiesConfig;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
-import ua.goit.dev6.library.repository.AuthorBookRelationRepository;
 import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.AuthorService;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,9 +33,8 @@ public class BookController extends HttpServlet {
         AuthorConverter authorConverter = new AuthorConverter();
         authorService = new AuthorService(authorRepository, authorConverter);
         BookRepository bookRepository = new BookRepository(dbProvider);
-        AuthorBookRelationRepository authorBookRelationRepository = new AuthorBookRelationRepository(dbProvider);
         BookConverter bookConverter = new BookConverter(authorConverter);
-        bookService = new BookService(authorService, bookRepository, bookConverter, authorBookRelationRepository);
+        bookService = new BookService(authorService, bookRepository, bookConverter);
     }
 
     @Override

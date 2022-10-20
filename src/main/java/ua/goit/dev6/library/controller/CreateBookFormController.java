@@ -1,6 +1,5 @@
 package ua.goit.dev6.library.controller;
 
-import ua.goit.dev6.library.config.DatabaseManagerConnector;
 import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.repository.AuthorRepository;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.Set;
 
 @WebServlet(urlPatterns = "/books/create/form")

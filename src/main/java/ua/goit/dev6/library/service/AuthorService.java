@@ -6,7 +6,6 @@ import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.repository.AuthorRepository;
 import ua.goit.dev6.library.service.converter.AuthorConverter;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

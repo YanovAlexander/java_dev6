@@ -1,11 +1,8 @@
 package ua.goit.dev6.library.service;
 
-import ua.goit.dev6.library.exceptions.AuthorAlreadyExistException;
-import ua.goit.dev6.library.model.dao.AuthorDao;
 import ua.goit.dev6.library.model.dao.BookDao;
 import ua.goit.dev6.library.model.dto.AuthorDto;
 import ua.goit.dev6.library.model.dto.BookDto;
-import ua.goit.dev6.library.repository.AuthorBookRelationRepository;
 import ua.goit.dev6.library.repository.BookRepository;
 import ua.goit.dev6.library.service.converter.BookConverter;
 
@@ -18,14 +15,11 @@ public class BookService {
     private BookRepository bookRepository;
     private BookConverter converter;
 
-    private AuthorBookRelationRepository authorBookRelationRepository;
 
-    public BookService(AuthorService authorService, BookRepository bookRepository, BookConverter converter,
-                       AuthorBookRelationRepository authorBookRelationRepository) {
+    public BookService(AuthorService authorService, BookRepository bookRepository, BookConverter converter) {
         this.authorService = authorService;
         this.bookRepository = bookRepository;
         this.converter = converter;
-        this.authorBookRelationRepository = authorBookRelationRepository;
     }
 
     public void save(BookDto dto) {
@@ -36,7 +30,7 @@ public class BookService {
         dto.setAuthors(authors);
         BookDao book = converter.to(dto);
         bookRepository.save(book);
-        authorBookRelationRepository.save(authorsIds, book.getId());
+//        authorBookRelationRepository.save(authorsIds, book.getId());
     }
 
     public List<BookDto> findByName(String bookName) {

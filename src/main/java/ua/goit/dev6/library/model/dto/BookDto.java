@@ -1,7 +1,5 @@
 package ua.goit.dev6.library.model.dto;
 
-import ua.goit.dev6.library.model.dao.AuthorDao;
-
 import java.util.Set;
 
 public class BookDto {
