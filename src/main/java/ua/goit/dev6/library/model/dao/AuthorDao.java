@@ -1,7 +1,10 @@
 package ua.goit.dev6.library.model.dao;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name = "author")
 public class AuthorDao {
     private Integer id;
     private String firstName;
@@ -25,6 +28,8 @@ public class AuthorDao {
     public AuthorDao() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -33,6 +38,7 @@ public class AuthorDao {
         this.id = id;
     }
 
+    @Column(name = "first_name", length = 1000)
     public String getFirstName() {
         return firstName;
     }
@@ -41,6 +47,7 @@ public class AuthorDao {
         this.firstName = firstName;
     }
 
+    @Column(name = "last_name", length = 1000)
     public String getLastName() {
         return lastName;
     }
@@ -49,6 +56,7 @@ public class AuthorDao {
         this.lastName = lastName;
     }
 
+    @Column(name = "email", length = 1000)
     public String getEmail() {
         return email;
     }
@@ -57,6 +65,7 @@ public class AuthorDao {
         this.email = email;
     }
 
+    @ManyToMany(mappedBy = "authors")
     public Set<BookDao> getBooks() {
         return books;
     }

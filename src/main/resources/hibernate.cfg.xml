@@ -6,15 +6,15 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/goit_dev</property>
+        <property name="connection.url">${dbUrl}</property>
         <property name="connection.username">${dbUsername}</property>
         <property name="connection.password">${dbPassword}</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="enable_lazy_load_no_trans">true</property>
 
-        <mapping resource="BookDao.hbm.xml"/>
-        <mapping resource="AuthorDao.hbm.xml"/>
+        <mapping class="ua.goit.dev6.library.model.dao.BookDao"/>
+        <mapping class="ua.goit.dev6.library.model.dao.AuthorDao"/>
     </session-factory>
 </hibernate-configuration>
 
