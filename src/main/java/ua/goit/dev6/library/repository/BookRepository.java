@@ -6,7 +6,6 @@ import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dao.AuthorDao;
 import ua.goit.dev6.library.model.dao.BookDao;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -14,10 +13,6 @@ import java.util.Set;
 public class BookRepository implements Repository<BookDao> {
 
     private final HibernateProvider manager;
-
-    private static final String INSERT = "INSERT INTO BOOK (name, count_pages) VALUES (?, ?)";
-    private static final String SELECT_BY_NAME = "SELECT id, name, count_pages FROM book WHERE name LIKE ?";
-
 
     public BookRepository(HibernateProvider manager) {
         this.manager = manager;
@@ -52,7 +47,7 @@ public class BookRepository implements Repository<BookDao> {
     public List<BookDao> findByName(String bookName) {
         try (final Session session = manager.openSession()) {
             final Transaction transaction = session.beginTransaction();
-            return session.createQuery("FROM BookDao as book WHERE book.name like :name")
+            return session.createQuery("FROM BookDao as book WHERE book.name like :name", BookDao.class)
                     .setParameter("name", "%" + bookName + "%")
                     .list();
         } catch (Exception e) {
@@ -69,17 +64,5 @@ public class BookRepository implements Repository<BookDao> {
     @Override
     public Set<AuthorDao> findByBookId(Integer bookId) {
         return null;
-    }
-
-    private List<BookDao> mapBookDaos(ResultSet resultSet) throws SQLException {
-        List<BookDao> books = new ArrayList<>();
-        while (resultSet.next()) {
-            BookDao dao = new BookDao();
-            dao.setId(resultSet.getInt("id"));
-            dao.setName(resultSet.getString("name"));
-            dao.setCountPages(resultSet.getInt("count_pages"));
-            books.add(dao);
-        }
-        return books;
     }
 }

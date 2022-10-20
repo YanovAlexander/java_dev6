@@ -7,20 +7,11 @@ import ua.goit.dev6.library.config.HibernateProvider;
 import ua.goit.dev6.library.model.dao.AuthorDao;
 import ua.goit.dev6.library.model.dao.BookDao;
 
-import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AuthorRepository implements Repository<AuthorDao> {
 
     private final HibernateProvider manager;
-    private static final String INSERT = "INSERT INTO author(first_name, last_name, email) VALUES(?,?,?)";
-    private static final String SELECT_BY_EMAIL = "SELECT id, first_name, last_name, email " +
-            "FROM AUTHOR WHERE email like ?";
-    private static final String SELECT_BY_BOOK_ID = "SELECT a.id, a.first_name, a.last_name, a.email FROM author a " +
-            "INNER JOIN author_book_relation abr ON a.id = abr.author_id " +
-            "WHERE abr.book_id=?";
-    private static final String SELECT_ALL = "SELECT a.id, a.first_name, a.last_name, a.email FROM author a";
 
     public AuthorRepository(HibernateProvider manager) {
         this.manager = manager;
@@ -63,10 +54,8 @@ public class AuthorRepository implements Repository<AuthorDao> {
     public Set<AuthorDao> findAll() {
         try (Session session = manager.openSession()) {
             Transaction transaction = session.beginTransaction();
-            return session.createQuery("Select a From AuthorDao a", AuthorDao.class)
-                    .getResultList()
-                    .stream()
-                    .collect(Collectors.toSet());
+            return new HashSet<>(session.createQuery("Select a From AuthorDao a", AuthorDao.class)
+                    .getResultList());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -84,9 +73,7 @@ public class AuthorRepository implements Repository<AuthorDao> {
             Transaction transaction = session.beginTransaction();
 
             MultiIdentifierLoadAccess<AuthorDao> multiLoadAccess = session.byMultipleIds(AuthorDao.class);
-            return multiLoadAccess.multiLoad(authorIds)
-                    .stream()
-                    .collect(Collectors.toSet());
+            return new HashSet<>(multiLoadAccess.multiLoad(authorIds));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,30 +106,5 @@ public class AuthorRepository implements Repository<AuthorDao> {
 //        }
 //        return Optional.empty();
         return null;
-    }
-
-    private AuthorDao mapAuthorDao(ResultSet resultSet) throws SQLException {
-        AuthorDao author = null;
-        while (resultSet.next()) {
-            author = mapAuthor(resultSet);
-        }
-        return author;
-    }
-
-    private Set<AuthorDao> mapAuthorDaos(ResultSet resultSet) throws SQLException {
-        Set<AuthorDao> authors = new HashSet<>();
-        while (resultSet.next()) {
-            authors.add(mapAuthor(resultSet));
-        }
-        return authors;
-    }
-
-    private AuthorDao mapAuthor(ResultSet resultSet) throws SQLException {
-        AuthorDao author = new AuthorDao();
-        author.setId(resultSet.getInt("id"));
-        author.setFirstName(resultSet.getString("first_name"));
-        author.setLastName(resultSet.getString("last_name"));
-        author.setEmail(resultSet.getString("email"));
-        return author;
     }
 }
