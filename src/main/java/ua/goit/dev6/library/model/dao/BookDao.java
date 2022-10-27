@@ -2,9 +2,12 @@ package ua.goit.dev6.library.model.dao;
 
 import javax.persistence.*;
 import java.util.Set;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "book")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Book")
 public class BookDao {
     private Integer id;
     private String name;

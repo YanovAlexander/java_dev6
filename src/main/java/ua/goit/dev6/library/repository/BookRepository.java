@@ -48,6 +48,7 @@ public class BookRepository implements Repository<BookDao> {
             final Transaction transaction = session.beginTransaction();
             return session.createQuery("FROM BookDao as book WHERE book.name like :name", BookDao.class)
                     .setParameter("name", "%" + bookName + "%")
+                    .setCacheable(true)
                     .list();
         } catch (Exception e) {
             e.printStackTrace();

@@ -81,6 +81,7 @@ public class AuthorRepository implements Repository<AuthorDao> {
             return new HashSet<>(session.createQuery("FROM AuthorDao as a WHERE a.firstName like :name OR a.lastName like :name"
                             , AuthorDao.class)
                     .setParameter("name", "%" + authorName + "%")
+                    .setCacheable(true)
                     .list());
         } catch (Exception e) {
             e.printStackTrace();
